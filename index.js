@@ -1,10 +1,5 @@
 const fns = require("./contacts")
 
-// fns.listContacts()
-// fns.removeContact(13)
-// fns.getContactById(8)
-// fns.addContact("Alex Xela", "pharetra.ut@dictum.co.uk", "(715) 598-5792")
-// fns.listContacts()
 const { Command } = require("commander")
 const program = new Command()
 program
