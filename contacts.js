@@ -1,5 +1,6 @@
 const fs = require("fs").promises
 const path = require("path")
+const { v4: uuidv4 } = require("uuid")
 
 const contactsPath = path.resolve("db/contacts.json")
 
@@ -13,7 +14,8 @@ function getContactById(contactId) {
   fs.readFile(contactsPath)
     .then((data) =>
       JSON.parse(data.toString()).find(
-        (contact) => contact.id === Number(contactId) && console.table(contact)
+        (contact) =>
+          contact.id.toString() === contactId && console.table(contact)
       )
     )
     .catch((err) => console.log(err.message))
@@ -23,7 +25,7 @@ function removeContact(contactId) {
   fs.readFile(contactsPath)
     .then((data) => {
       const contacts = JSON.parse(data).filter(
-        (contact) => contact.id !== Number(contactId)
+        (contact) => contact.id.toString() !== contactId
       )
       fs.writeFile(contactsPath, JSON.stringify(contacts))
         .then(() =>
@@ -38,7 +40,7 @@ function addContact(name, email, phone) {
   fs.readFile(contactsPath)
     .then((data) => {
       const contacts = JSON.parse(data)
-      const id = contacts.length + 1
+      const id = uuidv4()
       const newContact = { id, name, email, phone }
       contacts.push(newContact)
       fs.writeFile(contactsPath, JSON.stringify(contacts))
@@ -47,7 +49,5 @@ function addContact(name, email, phone) {
     })
     .catch((err) => console.log(err.message))
 }
-
-// const fns = { listContacts }
 
 module.exports = { listContacts, getContactById, addContact, removeContact }
